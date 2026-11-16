@@ -1,3 +1,13 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 6 optimizations:
+# - [HIGH] Switch "lint" from macOS to ubuntu runner
+# - [HIGH] Switch "build" from macOS to ubuntu runner
+# - [HIGH] Switch "syntax-check" from macOS to ubuntu runner
+# - [HIGH] Switch "makefile-check" from macOS to ubuntu runner
+# - [MEDIUM] Add concurrency group to "native-binaries.yml"
+# - [MEDIUM] 4 jobs clone the repo — consider artifact sharing
+# Estimated savings: ~3 min/run
+#
 name: Native Binaries CI
 
 on:
@@ -13,6 +23,10 @@ on:
       - '.github/workflows/native-binaries.yml'
   workflow_dispatch:
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   lint:
     name: Lint Objective-C
